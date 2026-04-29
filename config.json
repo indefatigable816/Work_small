@@ -1,0 +1,16 @@
+{
+  "blogTitle": "My Blog",
+  "blogDescription": "",
+  "repo": "OWNER/REPO",
+  "branch": "main",
+  "adminPasswordHash": "REPLACE_VIA_SETUP",
+  "encryptedPAT": "REPLACE_VIA_SETUP",
+  "giscus": {
+    "enabled": false,
+    "repo": "OWNER/REPO",
+    "repoId": "",
+    "category": "General",
+    "categoryId": "",
+    "theme": "light"
+  }
+}

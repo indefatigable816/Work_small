@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Setup</title>
+  <style>
+    :root {
+      --bg: #f7f7f5; --surface: #fff; --border: #e6e6e0;
+      --text: #1a1a1a; --muted: #6b6b6b;
+      --accent: #2563eb; --green: #16a34a;
+      --radius: 8px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 40px 24px 80px;
+    }
+    .wrap { max-width: 580px; margin: 0 auto; }
+
+    h1 { font-size: 24px; font-weight: 700; letter-spacing: -.3px; margin-bottom: 8px; }
+    .subtitle { color: var(--muted); font-size: 15px; margin-bottom: 36px; }
+
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      margin-bottom: 16px;
+    }
+    .step-num {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .step h2 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .note {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+    .note a { color: var(--accent); }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin: 12px 0 5px;
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .15s;
+    }
+    input:focus { border-color: var(--accent); }
+
+    .optional { color: var(--muted); font-weight: 400; font-size: 11px; }
+
+    .gen-btn {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 11px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .gen-btn:hover { background: #1d4ed8; }
+
+    /* Output */
+    .output-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      margin-top: 20px;
+      display: none;
+    }
+    .output-box h2 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--green);
+    }
+    .output-box .note { margin-bottom: 12px; }
+
+    textarea {
+      width: 100%;
+      height: 240px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      resize: vertical;
+      outline: none;
+      background: var(--bg);
+    }
+
+    .copy-btn {
+      margin-top: 10px;
+      padding: 7px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface);
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .copy-btn:hover { background: var(--bg); }
+    .copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+    .err-msg { color: #dc2626; font-size: 13px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Blog Setup</h1>
+  <p class="subtitle">
+    Open this file in your browser (a <code>file://</code> URL works fine).
+    Fill in the fields, generate your <code>config.json</code>, then
+    paste it into the root of your repo.
+  </p>
+
+  <!-- Step 1 -->
+  <div class="step">
+    <p class="step-num">Step 1</p>
+    <h2>Blog Info</h2>
+    <label for="blogTitle">Blog title</label>
+    <input type="text" id="blogTitle" placeholder="My Blog" />
+
+    <label for="blogDesc">Description <span class="optional">(optional)</span></label>
+    <input type="text" id="blogDesc" placeholder="Thoughts and writings" />
+
+    <label for="repoSlug">GitHub repo <code>owner/name</code></label>
+    <input type="text" id="repoSlug" placeholder="indefatigable816/Work_small" />
+
+    <label for="branch">Branch</label>
+    <input type="text" id="branch" value="main" />
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step">
+    <p class="step-num">Step 2</p>
+    <h2>Admin Password</h2>
+    <label for="adminPw">Choose an admin password</label>
+    <input type="password" id="adminPw" placeholder="Something strong" autocomplete="new-password" />
+    <p class="note">
+      This is the password you type into the ⚙ panel on your blog to
+      unlock post visibility controls. Store it somewhere safe.
+    </p>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step">
+    <p class="step-num">Step 3</p>
+    <h2>GitHub Personal Access Token</h2>
+    <label for="ghPAT">PAT (starts with <code>ghp_</code> or <code>github_pat_</code>)</label>
+    <input type="password" id="ghPAT" placeholder="ghp_…" autocomplete="off" />
+    <p class="note">
+      Create one at:
+      <strong>GitHub → Settings → Developer settings →
+      Personal access tokens → Fine-grained tokens</strong><br>
+      Required permission:
+      <strong>Repository: Contents — Read and write</strong>
+      on the <em>Work_small</em> repository only.<br><br>
+      The token is encrypted with your password before being stored.
+      Nobody can read it without knowing your password.
+    </p>
+  </div>
+
+  <!-- Step 4 (optional) -->
+  <div class="step">
+    <p class="step-num">Step 4 — Optional</p>
+    <h2>Giscus Comments</h2>
+    <p class="note" style="margin-top:0;margin-bottom:10px">
+      Visit <a href="https://giscus.app" target="_blank" rel="noopener">giscus.app</a>,
+      enter your repo name, enable Discussions, and copy the values below
+      from the generated <code>&lt;script&gt;</code> tag.
+    </p>
+    <label for="gRepoId">Repo ID (<code>data-repo-id</code>)</label>
+    <input type="text" id="gRepoId" placeholder="R_kgDO…" />
+
+    <label for="gCategory">Category name</label>
+    <input type="text" id="gCategory" value="General" />
+
+    <label for="gCatId">Category ID (<code>data-category-id</code>)</label>
+    <input type="text" id="gCatId" placeholder="DIC_kwDO…" />
+  </div>
+
+  <p class="err-msg" id="errMsg" style="display:none"></p>
+
+  <button class="gen-btn" onclick="generate()">Generate config.json</button>
+
+  <!-- Output -->
+  <div class="output-box" id="outputBox">
+    <h2>✓ Your config.json is ready</h2>
+    <p class="note">
+      Copy the contents below and save them as <code>config.json</code>
+      in the root of your repo. Then push and GitHub Pages will pick it up.
+    </p>
+    <textarea id="configOut" readonly onclick="this.select()"></textarea>
+    <button class="copy-btn" id="copyBtn" onclick="copyConfig()">Copy to clipboard</button>
+  </div>
+
+</div>
+
+<script>
+  async function sha256hex(text) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+
+  async function encryptPAT(password, pat) {
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv   = crypto.getRandomValues(new Uint8Array(12));
+
+    const km = await crypto.subtle.importKey(
+      'raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey']
+    );
+    const key = await crypto.subtle.deriveKey(
+      { name:'PBKDF2', salt, iterations:100000, hash:'SHA-256' },
+      km,
+      { name:'AES-GCM', length:256 },
+      false, ['encrypt']
+    );
+    const ct = await crypto.subtle.encrypt({ name:'AES-GCM', iv }, key,
+      new TextEncoder().encode(pat)
+    );
+
+    const combined = new Uint8Array(salt.length + iv.length + ct.byteLength);
+    combined.set(salt, 0);
+    combined.set(iv,   salt.length);
+    combined.set(new Uint8Array(ct), salt.length + iv.length);
+    return btoa(String.fromCharCode(...combined));
+  }
+
+  async function generate() {
+    const err = document.getElementById('errMsg');
+    err.style.display = 'none';
+
+    const pw    = document.getElementById('adminPw').value.trim();
+    const pat   = document.getElementById('ghPAT').value.trim();
+    const repo  = document.getElementById('repoSlug').value.trim();
+    const title = document.getElementById('blogTitle').value.trim() || 'My Blog';
+    const desc  = document.getElementById('blogDesc').value.trim();
+    const branch = document.getElementById('branch').value.trim() || 'main';
+    const gRepoId  = document.getElementById('gRepoId').value.trim();
+    const gCat     = document.getElementById('gCategory').value.trim() || 'General';
+    const gCatId   = document.getElementById('gCatId').value.trim();
+
+    if (!pw)   { showErr('Please enter an admin password.'); return; }
+    if (!pat)  { showErr('Please enter your GitHub PAT.'); return; }
+    if (!repo || !repo.includes('/')) {
+      showErr('Please enter the repo in owner/name format.'); return;
+    }
+
+    const btn = document.querySelector('.gen-btn');
+    btn.textContent = 'Generating…';
+    btn.disabled = true;
+
+    try {
+      const hash      = await sha256hex(pw);
+      const encrypted = await encryptPAT(pw, pat);
+
+      const config = {
+        blogTitle:       title,
+        blogDescription: desc,
+        repo,
+        branch,
+        adminPasswordHash: hash,
+        encryptedPAT:      encrypted,
+        giscus: {
+          enabled:    !!(gRepoId && gCatId),
+          repo,
+          repoId:     gRepoId,
+          category:   gCat,
+          categoryId: gCatId,
+          theme:      'light'
+        }
+      };
+
+      document.getElementById('configOut').value = JSON.stringify(config, null, 2);
+      document.getElementById('outputBox').style.display = 'block';
+      document.getElementById('outputBox').scrollIntoView({ behavior:'smooth', block:'start' });
+    } catch(e) {
+      showErr('Error: ' + e.message);
+    } finally {
+      btn.textContent = 'Generate config.json';
+      btn.disabled = false;
+    }
+  }
+
+  async function copyConfig() {
+    const ta  = document.getElementById('configOut');
+    const btn = document.getElementById('copyBtn');
+    try {
+      await navigator.clipboard.writeText(ta.value);
+    } catch {
+      ta.select();
+      document.execCommand('copy');
+    }
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy to clipboard';
+      btn.classList.remove('copied');
+    }, 2000);
+  }
+
+  function showErr(msg) {
+    const el = document.getElementById('errMsg');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+</script>
+</body>
+</html>
