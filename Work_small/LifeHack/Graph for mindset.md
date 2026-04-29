@@ -8,5 +8,5 @@ Graph for mindset
 Thursday, February 12, 2026
 5:58 PM
 
-![image1](../../resources/36b2f4953f2c4e7bae54793bd3731088.png)
+![image1](../../resources/36f6760ad28f4108bf2330285dfed095.png)
 

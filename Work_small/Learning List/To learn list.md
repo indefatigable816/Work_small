@@ -1,6 +1,6 @@
 ---
 title: To learn list
-updated: 2026-04-03T10:58:16
+updated: 2026-02-23T14:05:16
 created: 2026-02-06T15:21:01
 ---
 
@@ -8,10 +8,10 @@ To learn list
 Friday, February 6, 2026
 3:21 PM
 
-«span style='color:#000000;margin:0in;font-family:'»- [x]  風險管理  
+«span style='color:#000000;margin:0in;font-family:'»- [ ]  風險管理  
 
 «/span»
-«span style='color:#000000;margin:0in;font-family:'»- [x]  每日降商紀錄表  
+«span style='color:#000000;margin:0in;font-family:'»- [ ]  每日降商紀錄表  
 
 «/span»
 «span style='color:#000000;margin:0in;font-family:'»- [ ]  ctrl+win+L  

@@ -13,7 +13,7 @@ PM
 - <span style='color:black'>A proper building grows naturally, logically, and poetically out of all its conditions.</span>
 - <span style='color:black'>Frame a view ,don’t merely exhibit it.</span>
 - <span style='color:black'>asymmetrical balance</span>
-- ![image1](../../../../resources/b80f0c77e29b4391ab495215a1b51850.jpeg)
+- ![image1](../../../../resources/b2d7fe5245ad4b9aa9c199349a1e5397.jpeg)
 - <span style='color:black'>建築分類：加法、減法、模鑄、抽象</span>
 - <span style='color:black'>傳統建築外牆較厚(靠外牆支撐)，採三段式底中頂層；現代建築則較薄(鋼筋支撐)</span>
 - <span style='color:black'>less is more/bore.</span>

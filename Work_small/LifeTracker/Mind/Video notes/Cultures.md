@@ -14,6 +14,6 @@ Thursday, February 12, 2026
 
 [我們都是非洲人? 人類真的起源於非洲嗎? 科學證明【人類遷徙史】](https://www.youtube.com/watch?v=tjJhrVvL35I)
 
-![image1](../../../../resources/90b779a3a7ad4dcbb96fb683254ba99f.png)
+![image1](../../../../resources/4fddebe524754a839498c33d57c70705.png)
 
-![image2](../../../../resources/2818aea2dbd248449ddbc0c40c2987d1.png)
+![image2](../../../../resources/f13cdbce905b45af9573c7d1ae83ebe3.png)

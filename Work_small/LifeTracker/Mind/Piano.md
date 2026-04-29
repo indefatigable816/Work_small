@@ -10,4 +10,4 @@ Thursday, February 12, 2026
 
 [圓滑線等於樂句嗎？怎樣劃分樂句？/找出樂句你的彈奏變好聽了！](https://www.youtube.com/watch?v=DsejN9ThxtE)
 
-![image1](../../../resources/8f173d19ef1a49fb94694c373b07c935.png)
+![image1](../../../resources/e5ee0dfce0834216a3fcc876bb74fe57.png)

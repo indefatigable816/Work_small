@@ -12,7 +12,7 @@ Monday, January 5, 2026
 
 [Google's 6 Hour Prompt Engineering Course in 10 Minutes](https://www.youtube.com/watch?v=o3qfL2fcSx4)
 
-![image1](../../resources/d370465032f04535b0228abfcb7f5dce.png)
+![image1](../../resources/42fb467dbfe644609db4e60b29613443.png)
 Understanding the Core Principles of Prompting
 - Google's prompt engineering course is structured around five core principles:**task, context, references, evaluate, and iterate**.
 - The fundamental element is the**task**, which defines the exact output you want the AI to produce, not just the general topic .

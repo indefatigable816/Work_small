@@ -8,10 +8,10 @@ The cultural map
 Thursday, February 12, 2026
 5:57 PM
 
-![image1](../../../../resources/5ffd266fc36e456aaab178f4e6f36412.png)
+![image1](../../../../resources/d108fcbe1be34b98a97104020762c0c6.png)
 
-![image2](../../../../resources/9bdb8641acb54e70b4e91ee0e70262e9.png)
+![image2](../../../../resources/46bd98589eb946b490607decc0cf83b4.png)
 
-![image3](../../../../resources/9c42d73489984503817bfc73b3b29156.png)
+![image3](../../../../resources/9de5f1ed178a403d8af79d4750d8e6f5.png)
 
-![image4](../../../../resources/cc4df2ba24124225bc14999481d1ffd1.png)
+![image4](../../../../resources/75d876bf2fc5475bba091d9332a0b768.png)

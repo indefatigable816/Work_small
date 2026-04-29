@@ -6,9 +6,9 @@ created: 2026-01-20T23:50:59
 
 PM
 
-![image1](../../../../resources/470e2ff33d6f4f6ba557ccc8a37aec5f.png)
+![image1](../../../../resources/38880090c73f407dadd473f72c3d138a.png)
 
-![image2](../../../../resources/ee44f6c0a2c94c0b99e03486ee5a50bb.png)
+![image2](../../../../resources/179d33d5b5f5477e8ce7419be37a5beb.png)
 
 <span style='background:white'>Based on Cheng's benchmarking of four protein embeddings for enzymatic kinetic parameter prediction:</span>
 <span style='font-weight:bold;background:white'>For Mutant Enzymes:</span>
@@ -27,13 +27,13 @@ PM
 
 *From \< <https://zoom.localhost/index-5.1.10652.html#/aic>\>*
 
-![image3](../../../../resources/af8057fa11df4a8fa455afe5d2c450c6.png)
+![image3](../../../../resources/233c73e431344b078016687adc1fcdcc.png)
 
-![image4](../../../../resources/f4bb203700224816aaa62d9fc98bafb1.png)
+![image4](../../../../resources/0c78b63dae4a485ba12d32217291fe6b.png)
 
-![image5](../../../../resources/0740fb2e93124e5d8baeabf7f45d658c.png)
+![image5](../../../../resources/1e94a0879005451ea8af17b286cec96d.png)
 
-![image6](../../../../resources/135a790609634740806325c6378e8811.png)
+![image6](../../../../resources/d74b0bbaf79442848b534bf6f85b9386.png)
 
 <span style='background:white'>Based on the conversation, the specific token accuracy numbers weren't shared, but Cheng mentioned the validity rate was around 20% (improved from \<10%), which suggests the token accuracy may also be relatively low.</span>
 <span style='background:white'>Possible reasons for low token accuracy in SMILES generation include:</span>

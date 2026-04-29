@@ -9,7 +9,7 @@ AM
 - **Interface predicted template modelling (ipTM)**: a measure of the **accuracy** of the predicted structure of a multimer
 - **Predicted aligned error (PAE):** It is effectively a measure of **how confident** AlphaFold is that the protein’s domains are well packed and that the **relative placement of the domains/residues** in the predicted structure is correct.
 - **Predicted template modelling score (pTM):** an integrated measure of how well AlphaFold-Multimer has predicted the structure of a complex. It is the predicted template modelling (TM) score for a superposition between the predicted structure and the hypothetical true structure. pTM scores vary between 0 and 1: a score above 0.5 means the overall predicted fold for the complex will be similar to the true structure.
-- ![image1](../../../../resources/bca926c87af6468eb139afdf05c9618a.png)
+- ![image1](../../../../resources/c09936846a8141cab78714144026c45e.png)
 - GPT insight
   - ipTM reflects confidence in relative chain placement and is largely insensitive to mutation-induced loss of binding chemistry when global interface geometry is preserved. Drug resistance mutations are therefore expected to affect **interface-local confidence and contact features**, rather than ipTM itself.
 **What *should* change in resistant mutants (model-side)**

@@ -1,6 +1,6 @@
 ---
 title: Alphafold3
-updated: 2026-03-26T20:25:25
+updated: 2026-03-12T18:33:02
 created: 2026-03-12T18:32:18
 ---
 
@@ -14,4 +14,3 @@ Thursday, March 12, 2026
 
 From \<<https://github.com/google-deepmind/alphafold3/blob/main/docs/input.md>\>
 
-S=7DB',A\<=re3h/8

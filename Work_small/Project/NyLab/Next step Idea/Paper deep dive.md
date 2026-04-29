@@ -131,7 +131,7 @@ Saturday, February 7, 2026
 <span style='color:black'>Appendix</span>
 <https://doi.org/10.1371/journal.pone.0026760>
 
-<img src="../../../../resources/cd365eaafc8d41d38cae85295becf41c.png" alt="image1" />
+<img src="../../../../resources/e2fafa4b672a4635bf79d4fd9299a1f5.png" alt="image1" />
 [<span style='background:white'>https://pubmed.ncbi.nlm.nih.gov/27697991/</span>](https://pubmed.ncbi.nlm.nih.gov/27697991/)
 <span style='font-weight:bold;background:white'>Table 1.</span><span style='background:white'>Inhibition of cell growth by lapatinib and neratinib</span>
 <table style="width:100%;">

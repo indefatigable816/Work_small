@@ -7,7 +7,7 @@ created: 2026-01-02T17:06:11
 Friends
 Friday, January 2, 2026
 5:06 PM
-[Friends.xlsx](../../../resources/7d927c90fe9849b8a42d38f0091f11e0.xlsx)
-![image1](../../../resources/d161ea3418d14aaeb63e260938d01987.png)
-![image2](../../../resources/8f38ce702d37495382ea815207f0518c.png)
+[Friends.xlsx](../../../resources/a0bc3b18faf943e6832aad4982f2807f.xlsx)
+![image1](../../../resources/04bad058bb734466ab76ae55bf3b0173.png)
+![image2](../../../resources/8dd5553d75cd474ebc84a39700f5c23d.png)
 

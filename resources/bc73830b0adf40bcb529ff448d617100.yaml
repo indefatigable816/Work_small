@@ -1,0 +1,540 @@
+# Configuration for HER2 Variant Drug Binding Studies
+# Project: HER2 Therapeutic Resistance Mechanisms
+# Date: 2026-02-13
+# Prepared for: Mutation-Aware-Protein-Folding Model Validation Run
+
+# =============================================================================
+# GLOBAL SETTINGS
+# =============================================================================
+global_config:
+  project_name: "HER2_Drug_Resistance_Validation"
+  description: "Comparative analysis of HER2 variants with therapeutic agents - DIMER and MONOMER configurations"
+  
+  # Sampling parameters
+  samples_per_seed: 5
+  num_seeds: 5
+  total_samples_per_experiment: 25  # 5 seeds × 5 samples = 25 models per complex
+  
+  # Control group sharing strategy
+  shared_controls:
+    WT_ECD_DIMER: 
+      experiments: ["EXP001A", "EXP002A"]
+      description: "Wild-type ECD homodimer used for both Trastuzumab and Pertuzumab"
+      run_once: true
+      stoichiometry: "2:1:1"  # 2 HER2 ECD : 1 Heavy chain : 1 Light chain
+    WT_ECD_MONOMER:
+      experiments: ["EXP001B", "EXP002B"]
+      description: "Wild-type ECD monomer used for both Trastuzumab and Pertuzumab"
+      run_once: true
+      stoichiometry: "1:1:1"  # 1 HER2 ECD : 1 Heavy chain : 1 Light chain
+    WT_ICD:
+      experiments: ["EXP003", "EXP004"]
+      description: "Wild-type kinase domain used for both L755S and K753E Lapatinib experiments"
+      run_once: true
+      stoichiometry: "1:1"  # 1 HER2 kinase : 1 Lapatinib
+  
+  # Output requirements
+  output_formats:
+    - cif  # Crystallographic Information File (structural coordinates)
+    - npz  # Compressed NumPy array (confidence metrics)
+  
+  confidence_metrics:
+    - pae        # Predicted Aligned Error matrix
+    - plddt      # per-residue confidence (predicted LDDT)
+    - iptm       # Interface Predicted TM-score
+    - ptm        # Predicted TM-score (overall)
+    - ipae       # Interface PAE
+    - confidence_score  # Overall confidence
+    - chains_ptm        # Per-chain PTM
+    - pair_chains_iptm  # Pairwise chain iPTM
+  
+  # Model settings
+  model_type: 
+  use_templates: false
+  max_recycles: 3
+  
+  # File organization
+  output_directory: "./HER2_validation_results"
+  separate_by_experiment: true
+  naming_convention: "{experiment}_{variant}_{drug}_{seed}_{sample}"
+
+# =============================================================================
+# EXPERIMENT 1A: Trastuzumab Binding to HER2 Δ16 DIMER
+# =============================================================================
+experiments:
+  - experiment_id: "EXP001A"
+    name: "Trastuzumab_Delta16_Dimer_vs_WT"
+    description: "Evaluate Trastuzumab binding to HER2 Δ16 homodimer vs wild-type homodimer"
+    hypothesis: "Δ16 homodimer shows reduced binding (low PTM) due to covalent dimerization"
+    stoichiometry: "2:1:1"  # 2 HER2 : 1 Heavy : 1 Light
+    
+    groups:
+      # Experimental group
+      - group_id: "EXP001A_MUT"
+        name: "HER2_Delta16_Dimer_Trastuzumab"
+        variant: "Delta16"
+        mutation_description: "Exon 16 deletion (amino acids 595-635 deleted from ECD)"
+        complex_type: "homodimer_antibody"
+        
+        sequences:
+          - chain_id: "A"
+            chain_type: "protein"
+            description: "HER2 Δ16 Extracellular Domain (Chain 1)"
+            sequence: "TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLPTNASLSFLQDIQEVQGYVLIAHNQVRQVPLQRLRIVRGTQLFEDNYALAVLDNGDPLNNTTPVTGASPGGLRELQLRSLTEILKGGVLIQRNPQLCYQDTILWKDIFHKNNQLALTLIDTNRSRACHPCSPMCKGSRCWGESSEDCQSLTRTVCAGGCARCKGPLPTDCCHEQCAAGCTGPKHSDCLACLHFNHSGICELHCPALVTYNTDTFESMPNPEGRYTFGASCVTACPYNYLSTDVGSCTLVCPLHNQEVTAEDGTQRCEKCSKPCARVCYGLGMEHLREVRAVTSANIQEFAGCKKIFGSLAFLPESFDGDPASNTAPLQPEQLQVFETLEEITGYLYISAWPDSLPDLSVFQNLQVIRGRILHNGAYSLTLQGLGISWLGLRSLRELGSGLALIHHNTHLCFVHTVPWDQLFRNPHQALLHTANRPEDECVGEGLACHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSGVKPDLSYMPIWKFPDEEGACQPCPINCTHSPLTS"
+            modifications:
+              - type: "deletion"
+                region: "exon16"
+                residues: "595-635"
+          
+          - chain_id: "B"
+            chain_type: "protein"
+            description: "HER2 Δ16 Extracellular Domain (Chain 2)"
+            sequence: "TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLPTNASLSFLQDIQEVQGYVLIAHNQVRQVPLQRLRIVRGTQLFEDNYALAVLDNGDPLNNTTPVTGASPGGLRELQLRSLTEILKGGVLIQRNPQLCYQDTILWKDIFHKNNQLALTLIDTNRSRACHPCSPMCKGSRCWGESSEDCQSLTRTVCAGGCARCKGPLPTDCCHEQCAAGCTGPKHSDCLACLHFNHSGICELHCPALVTYNTDTFESMPNPEGRYTFGASCVTACPYNYLSTDVGSCTLVCPLHNQEVTAEDGTQRCEKCSKPCARVCYGLGMEHLREVRAVTSANIQEFAGCKKIFGSLAFLPESFDGDPASNTAPLQPEQLQVFETLEEITGYLYISAWPDSLPDLSVFQNLQVIRGRILHNGAYSLTLQGLGISWLGLRSLRELGSGLALIHHNTHLCFVHTVPWDQLFRNPHQALLHTANRPEDECVGEGLACHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSGVKPDLSYMPIWKFPDEEGACQPCPINCTHSPLTS"
+            
+          - chain_id: "C"
+            chain_type: "protein"
+            description: "Trastuzumab Heavy Chain"
+            sequence: "EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTAYLQMNSLRAEDTAVYYCSRWGGDGFYAMDYWGQGTLVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSCDKTHTCPPCPAPELLGGPSVFLFPPKPKDTLMISRTPEVTCVVVDVSHEDPEVKFNWYVDGVEVHNAKTKPREEQYNSTYRVVSVLTVLHQDWLNGKEYKCKVSNKALPAPIEKTISKAKGQPREPQVYTLPPSREEMTKNQVSLTCLVKGFYPSDIAVEWESNGQPENNYKTTPPVLDSDGSFFLYSKLTVDKSRWQQGNVFSCSVMHEALHNHYTQKSLSLSPGK"
+            
+          - chain_id: "D"
+            chain_type: "protein"
+            description: "Trastuzumab Light Chain"
+            sequence: "DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAPKLLIYSASFLYSGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQHYTTPPTFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC"
+      
+      # Control group
+      - group_id: "EXP001A_WT"
+        name: "HER2_WT_Dimer_Trastuzumab"
+        variant: "wild_type"
+        complex_type: "homodimer_antibody"
+        
+        sequences:
+          - chain_id: "A"
+            chain_type: "protein"
+            description: "HER2 Wild-Type Extracellular Domain (Chain 1)"
+            sequence: "TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLPTNASLSFLQDIQEVQGYVLIAHNQVRQVPLQRLRIVRGTQLFEDNYALAVLDNGDPLNNTTPVTGASPGGLRELQLRSLTEILKGGVLIQRNPQLCYQDTILWKDIFHKNNQLALTLIDTNRSRACHPCSPMCKGSRCWGESSEDCQSLTRTVCAGGCARCKGPLPTDCCHEQCAAGCTGPKHSDCLACLHFNHSGICELHCPALVTYNTDTFESMPNPEGRYTFGASCVTACPYNYLSTDVGSCTLVCPLHNQEVTAEDGTQRCEKCSKPCARVCYGLGMEHLREVRAVTSANIQEFAGCKKIFGSLAFLPESFDGDPASNTAPLQPEQLQVFETLEEITGYLYISAWPDSLPDLSVFQNLQVIRGRILHNGAYSLTLQGLGISWLGLRSLRELGSGLALIHHNTHLCFVHTVPWDQLFRNPHQALLHTANRPEDECVGEGLACHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSGVKPDLSYMPIWKFPDEEGACQPCPINCTHSCVDLDDKGCPAEQRASPLTS"
+            
+          - chain_id: "B"
+            chain_type: "protein"
+            description: "HER2 Wild-Type Extracellular Domain (Chain 2)"
+            sequence: "TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLPTNASLSFLQDIQEVQGYVLIAHNQVRQVPLQRLRIVRGTQLFEDNYALAVLDNGDPLNNTTPVTGASPGGLRELQLRSLTEILKGGVLIQRNPQLCYQDTILWKDIFHKNNQLALTLIDTNRSRACHPCSPMCKGSRCWGESSEDCQSLTRTVCAGGCARCKGPLPTDCCHEQCAAGCTGPKHSDCLACLHFNHSGICELHCPALVTYNTDTFESMPNPEGRYTFGASCVTACPYNYLSTDVGSCTLVCPLHNQEVTAEDGTQRCEKCSKPCARVCYGLGMEHLREVRAVTSANIQEFAGCKKIFGSLAFLPESFDGDPASNTAPLQPEQLQVFETLEEITGYLYISAWPDSLPDLSVFQNLQVIRGRILHNGAYSLTLQGLGISWLGLRSLRELGSGLALIHHNTHLCFVHTVPWDQLFRNPHQALLHTANRPEDECVGEGLACHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSGVKPDLSYMPIWKFPDEEGACQPCPINCTHSCVDLDDKGCPAEQRASPLTS"
+            
+          - chain_id: "C"
+            chain_type: "protein"
+            description: "Trastuzumab Heavy Chain"
+            sequence: "EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTAYLQMNSLRAEDTAVYYCSRWGGDGFYAMDYWGQGTLVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSCDKTHTCPPCPAPELLGGPSVFLFPPKPKDTLMISRTPEVTCVVVDVSHEDPEVKFNWYVDGVEVHNAKTKPREEQYNSTYRVVSVLTVLHQDWLNGKEYKCKVSNKALPAPIEKTISKAKGQPREPQVYTLPPSREEMTKNQVSLTCLVKGFYPSDIAVEWESNGQPENNYKTTPPVLDSDGSFFLYSKLTVDKSRWQQGNVFSCSVMHEALHNHYTQKSLSLSPGK"
+            
+          - chain_id: "D"
+            chain_type: "protein"
+            description: "Trastuzumab Light Chain"
+            sequence: "DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAPKLLIYSASFLYSGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQHYTTPPTFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC"
+
+# =============================================================================
+# EXPERIMENT 1B: Trastuzumab Binding to HER2 Δ16 MONOMER
+# =============================================================================
+  - experiment_id: "EXP001B"
+    name: "Trastuzumab_Delta16_Monomer_vs_WT"
+    description: "Evaluate Trastuzumab binding to HER2 Δ16 monomer vs wild-type monomer"
+    hypothesis: "Δ16 monomer may show different binding pattern compared to dimer"
+    stoichiometry: "1:1:1"  # 1 HER2 : 1 Heavy : 1 Light
+    
+    groups:
+      # Experimental group
+      - group_id: "EXP001B_MUT"
+        name: "HER2_Delta16_Monomer_Trastuzumab"
+        variant: "Delta16"
+        mutation_description: "Exon 16 deletion (amino acids 595-635 deleted from ECD)"
+        complex_type: "monomer_antibody"
+        
+        sequences:
+          - chain_id: "A"
+            chain_type: "protein"
+            description: "HER2 Δ16 Extracellular Domain (Monomer)"
+            sequence: "TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLPTNASLSFLQDIQEVQGYVLIAHNQVRQVPLQRLRIVRGTQLFEDNYALAVLDNGDPLNNTTPVTGASPGGLRELQLRSLTEILKGGVLIQRNPQLCYQDTILWKDIFHKNNQLALTLIDTNRSRACHPCSPMCKGSRCWGESSEDCQSLTRTVCAGGCARCKGPLPTDCCHEQCAAGCTGPKHSDCLACLHFNHSGICELHCPALVTYNTDTFESMPNPEGRYTFGASCVTACPYNYLSTDVGSCTLVCPLHNQEVTAEDGTQRCEKCSKPCARVCYGLGMEHLREVRAVTSANIQEFAGCKKIFGSLAFLPESFDGDPASNTAPLQPEQLQVFETLEEITGYLYISAWPDSLPDLSVFQNLQVIRGRILHNGAYSLTLQGLGISWLGLRSLRELGSGLALIHHNTHLCFVHTVPWDQLFRNPHQALLHTANRPEDECVGEGLACHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSGVKPDLSYMPIWKFPDEEGACQPCPINCTHSPLTS"
+            modifications:
+              - type: "deletion"
+                region: "exon16"
+                residues: "595-635"
+            
+          - chain_id: "B"
+            chain_type: "protein"
+            description: "Trastuzumab Heavy Chain"
+            sequence: "EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTAYLQMNSLRAEDTAVYYCSRWGGDGFYAMDYWGQGTLVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSCDKTHTCPPCPAPELLGGPSVFLFPPKPKDTLMISRTPEVTCVVVDVSHEDPEVKFNWYVDGVEVHNAKTKPREEQYNSTYRVVSVLTVLHQDWLNGKEYKCKVSNKALPAPIEKTISKAKGQPREPQVYTLPPSREEMTKNQVSLTCLVKGFYPSDIAVEWESNGQPENNYKTTPPVLDSDGSFFLYSKLTVDKSRWQQGNVFSCSVMHEALHNHYTQKSLSLSPGK"
+            
+          - chain_id: "C"
+            chain_type: "protein"
+            description: "Trastuzumab Light Chain"
+            sequence: "DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAPKLLIYSASFLYSGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQHYTTPPTFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC"
+      
+      # Control group
+      - group_id: "EXP001B_WT"
+        name: "HER2_WT_Monomer_Trastuzumab"
+        variant: "wild_type"
+        complex_type: "monomer_antibody"
+        
+        sequences:
+          - chain_id: "A"
+            chain_type: "protein"
+            description: "HER2 Wild-Type Extracellular Domain (Monomer)"
+            sequence: "TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLPTNASLSFLQDIQEVQGYVLIAHNQVRQVPLQRLRIVRGTQLFEDNYALAVLDNGDPLNNTTPVTGASPGGLRELQLRSLTEILKGGVLIQRNPQLCYQDTILWKDIFHKNNQLALTLIDTNRSRACHPCSPMCKGSRCWGESSEDCQSLTRTVCAGGCARCKGPLPTDCCHEQCAAGCTGPKHSDCLACLHFNHSGICELHCPALVTYNTDTFESMPNPEGRYTFGASCVTACPYNYLSTDVGSCTLVCPLHNQEVTAEDGTQRCEKCSKPCARVCYGLGMEHLREVRAVTSANIQEFAGCKKIFGSLAFLPESFDGDPASNTAPLQPEQLQVFETLEEITGYLYISAWPDSLPDLSVFQNLQVIRGRILHNGAYSLTLQGLGISWLGLRSLRELGSGLALIHHNTHLCFVHTVPWDQLFRNPHQALLHTANRPEDECVGEGLACHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSGVKPDLSYMPIWKFPDEEGACQPCPINCTHSCVDLDDKGCPAEQRASPLTS"
+            
+          - chain_id: "B"
+            chain_type: "protein"
+            description: "Trastuzumab Heavy Chain"
+            sequence: "EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTAYLQMNSLRAEDTAVYYCSRWGGDGFYAMDYWGQGTLVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSCDKTHTCPPCPAPELLGGPSVFLFPPKPKDTLMISRTPEVTCVVVDVSHEDPEVKFNWYVDGVEVHNAKTKPREEQYNSTYRVVSVLTVLHQDWLNGKEYKCKVSNKALPAPIEKTISKAKGQPREPQVYTLPPSREEMTKNQVSLTCLVKGFYPSDIAVEWESNGQPENNYKTTPPVLDSDGSFFLYSKLTVDKSRWQQGNVFSCSVMHEALHNHYTQKSLSLSPGK"
+            
+          - chain_id: "C"
+            chain_type: "protein"
+            description: "Trastuzumab Light Chain"
+            sequence: "DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAPKLLIYSASFLYSGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQHYTTPPTFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC"
+
+# =============================================================================
+# EXPERIMENT 2A: Pertuzumab Binding to HER2 S310F DIMER
+# =============================================================================
+  - experiment_id: "EXP002A"
+    name: "Pertuzumab_S310F_Dimer_vs_WT"
+    description: "Evaluate Pertuzumab binding to HER2 S310F homodimer vs wild-type homodimer"
+    hypothesis: "S310F mutation at dimerization interface shows reduced binding"
+    stoichiometry: "2:1:1"  # 2 HER2 : 1 Heavy : 1 Light
+    
+    groups:
+      # Experimental group
+      - group_id: "EXP002A_MUT"
+        name: "HER2_S310F_Dimer_Pertuzumab"
+        variant: "S310F"
+        mutation_description: "Serine to Phenylalanine at position 310 in ECD Domain II"
+        complex_type: "homodimer_antibody"
+        
+        sequences:
+          - chain_id: "A"
+            chain_type: "protein"
+            description: "HER2 S310F Extracellular Domain (Chain 1)"
+            sequence: "TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLPTNASLSFLQDIQEVQGYVLIAHNQVRQVPLQRLRIVRGTQLFEDNYALAVLDNGDPLNNTTPVTGASPGGLRELQLRSLTEILKGGVLIQRNPQLCYQDTILWKDIFHKNNQLALTLIDTNRSRACHPCSPMCKGSRCWGESSEDCQSLTRTVCAGGCARCKGPLPTDCCHEQCAAGCTGPKHSDCLACLHFNHSGICELHCPALVTYNTDTFESMPNPEGRYTFGASCVTACPYNYLSTDVGFCTLVCPLHNQEVTAEDGTQRCEKCSKPCARVCYGLGMEHLREVRAVTSANIQEFAGCKKIFGSLAFLPESFDGDPASNTAPLQPEQLQVFETLEEITGYLYISAWPDSLPDLSVFQNLQVIRGRILHNGAYSLTLQGLGISWLGLRSLRELGSGLALIHHNTHLCFVHTVPWDQLFRNPHQALLHTANRPEDECVGEGLACHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSGVKPDLSYMPIWKFPDEEGACQPCPINCTHSCVDLDDKGCPAEQRASPLTS"
+            mutations:
+              - position: 310
+                from: "S"
+                to: "F"
+                domain: "ECD_II"
+                
+          - chain_id: "B"
+            chain_type: "protein"
+            description: "HER2 S310F Extracellular Domain (Chain 2)"
+            sequence: "TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLPTNASLSFLQDIQEVQGYVLIAHNQVRQVPLQRLRIVRGTQLFEDNYALAVLDNGDPLNNTTPVTGASPGGLRELQLRSLTEILKGGVLIQRNPQLCYQDTILWKDIFHKNNQLALTLIDTNRSRACHPCSPMCKGSRCWGESSEDCQSLTRTVCAGGCARCKGPLPTDCCHEQCAAGCTGPKHSDCLACLHFNHSGICELHCPALVTYNTDTFESMPNPEGRYTFGASCVTACPYNYLSTDVGFCTLVCPLHNQEVTAEDGTQRCEKCSKPCARVCYGLGMEHLREVRAVTSANIQEFAGCKKIFGSLAFLPESFDGDPASNTAPLQPEQLQVFETLEEITGYLYISAWPDSLPDLSVFQNLQVIRGRILHNGAYSLTLQGLGISWLGLRSLRELGSGLALIHHNTHLCFVHTVPWDQLFRNPHQALLHTANRPEDECVGEGLACHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSGVKPDLSYMPIWKFPDEEGACQPCPINCTHSCVDLDDKGCPAEQRASPLTS"
+            
+          - chain_id: "C"
+            chain_type: "protein"
+            description: "Pertuzumab Heavy Chain"
+            sequence: "EVQLVESGGGLVQPGGSLRLSCAASGFTFTDYTMDWVRQAPGKGLEWVADVNPNSGGSIYNQRFKGRFTLSVDRSKNTLYLQMNSLRAEDTAVYYCARNLGPSFYFDYWGQGTLVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSCDKTHTCPPCPAPELLGGPSVFLFPPKPKDTLMISRTPEVTCVVVDVSHEDPEVKFNWYVDGVEVHNAKTKPREEQYNSTYRVVSVLTVLHQDWLNGKEYKCKVSNKALPAPIEKTISKAKGQPREPQVYTLPPSREEMTKNQVSLTCLVKGFYPSDIAVEWESNGQPENNYKTTPPVLDSDGSFFLYSKLTVDKSRWQQGNVFSCSVMHEALHNHYTQKSLSLSPGK"
+            
+          - chain_id: "D"
+            chain_type: "protein"
+            description: "Pertuzumab Light Chain"
+            sequence: "DIQMTQSPSSSASVGDRVTITCKASQDVSIGVAWYQQKPGKAPKLLIYSASYRYTGVPSRFSGSGSGTDFTLTISSLQPEDFATYYCQQYYIYPYTFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC"
+      
+      # Control group
+      - group_id: "EXP002A_WT"
+        name: "HER2_WT_Dimer_Pertuzumab"
+        variant: "wild_type"
+        complex_type: "homodimer_antibody"
+        
+        sequences:
+          - chain_id: "A"
+            chain_type: "protein"
+            description: "HER2 Wild-Type Extracellular Domain (Chain 1)"
+            sequence: "TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLPTNASLSFLQDIQEVQGYVLIAHNQVRQVPLQRLRIVRGTQLFEDNYALAVLDNGDPLNNTTPVTGASPGGLRELQLRSLTEILKGGVLIQRNPQLCYQDTILWKDIFHKNNQLALTLIDTNRSRACHPCSPMCKGSRCWGESSEDCQSLTRTVCAGGCARCKGPLPTDCCHEQCAAGCTGPKHSDCLACLHFNHSGICELHCPALVTYNTDTFESMPNPEGRYTFGASCVTACPYNYLSTDVGSCTLVCPLHNQEVTAEDGTQRCEKCSKPCARVCYGLGMEHLREVRAVTSANIQEFAGCKKIFGSLAFLPESFDGDPASNTAPLQPEQLQVFETLEEITGYLYISAWPDSLPDLSVFQNLQVIRGRILHNGAYSLTLQGLGISWLGLRSLRELGSGLALIHHNTHLCFVHTVPWDQLFRNPHQALLHTANRPEDECVGEGLACHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSGVKPDLSYMPIWKFPDEEGACQPCPINCTHSCVDLDDKGCPAEQRASPLTS"
+            
+          - chain_id: "B"
+            chain_type: "protein"
+            description: "HER2 Wild-Type Extracellular Domain (Chain 2)"
+            sequence: "TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLPTNASLSFLQDIQEVQGYVLIAHNQVRQVPLQRLRIVRGTQLFEDNYALAVLDNGDPLNNTTPVTGASPGGLRELQLRSLTEILKGGVLIQRNPQLCYQDTILWKDIFHKNNQLALTLIDTNRSRACHPCSPMCKGSRCWGESSEDCQSLTRTVCAGGCARCKGPLPTDCCHEQCAAGCTGPKHSDCLACLHFNHSGICELHCPALVTYNTDTFESMPNPEGRYTFGASCVTACPYNYLSTDVGSCTLVCPLHNQEVTAEDGTQRCEKCSKPCARVCYGLGMEHLREVRAVTSANIQEFAGCKKIFGSLAFLPESFDGDPASNTAPLQPEQLQVFETLEEITGYLYISAWPDSLPDLSVFQNLQVIRGRILHNGAYSLTLQGLGISWLGLRSLRELGSGLALIHHNTHLCFVHTVPWDQLFRNPHQALLHTANRPEDECVGEGLACHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSGVKPDLSYMPIWKFPDEEGACQPCPINCTHSCVDLDDKGCPAEQRASPLTS"
+            
+          - chain_id: "C"
+            chain_type: "protein"
+            description: "Pertuzumab Heavy Chain"
+            sequence: "EVQLVESGGGLVQPGGSLRLSCAASGFTFTDYTMDWVRQAPGKGLEWVADVNPNSGGSIYNQRFKGRFTLSVDRSKNTLYLQMNSLRAEDTAVYYCARNLGPSFYFDYWGQGTLVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSCDKTHTCPPCPAPELLGGPSVFLFPPKPKDTLMISRTPEVTCVVVDVSHEDPEVKFNWYVDGVEVHNAKTKPREEQYNSTYRVVSVLTVLHQDWLNGKEYKCKVSNKALPAPIEKTISKAKGQPREPQVYTLPPSREEMTKNQVSLTCLVKGFYPSDIAVEWESNGQPENNYKTTPPVLDSDGSFFLYSKLTVDKSRWQQGNVFSCSVMHEALHNHYTQKSLSLSPGK"
+            
+          - chain_id: "D"
+            chain_type: "protein"
+            description: "Pertuzumab Light Chain"
+            sequence: "DIQMTQSPSSSASVGDRVTITCKASQDVSIGVAWYQQKPGKAPKLLIYSASYRYTGVPSRFSGSGSGTDFTLTISSLQPEDFATYYCQQYYIYPYTFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC"
+
+
+# =============================================================================
+# EXPERIMENT 2B: Pertuzumab Binding to HER2 S310F MONOMER
+# =============================================================================
+  - experiment_id: "EXP002B"
+    name: "Pertuzumab_S310F_Monomer_vs_WT"
+    description: "Evaluate Pertuzumab binding to HER2 S310F monomer vs wild-type monomer"
+    hypothesis: "S310F mutation shows reduced binding even in monomeric state"
+    stoichiometry: "1:1:1"  # 1 HER2 : 1 Heavy : 1 Light
+    
+    groups:
+      # Experimental group
+      - group_id: "EXP002B_MUT"
+        name: "HER2_S310F_Monomer_Pertuzumab"
+        variant: "S310F"
+        mutation_description: "Serine to Phenylalanine at position 310 in ECD Domain II"
+        complex_type: "monomer_antibody"
+        
+        sequences:
+          - chain_id: "A"
+            chain_type: "protein"
+            description: "HER2 S310F Extracellular Domain (Monomer)"
+            sequence: "TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLPTNASLSFLQDIQEVQGYVLIAHNQVRQVPLQRLRIVRGTQLFEDNYALAVLDNGDPLNNTTPVTGASPGGLRELQLRSLTEILKGGVLIQRNPQLCYQDTILWKDIFHKNNQLALTLIDTNRSRACHPCSPMCKGSRCWGESSEDCQSLTRTVCAGGCARCKGPLPTDCCHEQCAAGCTGPKHSDCLACLHFNHSGICELHCPALVTYNTDTFESMPNPEGRYTFGASCVTACPYNYLSTDVGFCTLVCPLHNQEVTAEDGTQRCEKCSKPCARVCYGLGMEHLREVRAVTSANIQEFAGCKKIFGSLAFLPESFDGDPASNTAPLQPEQLQVFETLEEITGYLYISAWPDSLPDLSVFQNLQVIRGRILHNGAYSLTLQGLGISWLGLRSLRELGSGLALIHHNTHLCFVHTVPWDQLFRNPHQALLHTANRPEDECVGEGLACHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSGVKPDLSYMPIWKFPDEEGACQPCPINCTHSCVDLDDKGCPAEQRASPLTS"
+            mutations:
+              - position: 310
+                from: "S"
+                to: "F"
+                domain: "ECD_II"
+            
+          - chain_id: "B"
+            chain_type: "protein"
+            description: "Pertuzumab Heavy Chain"
+            sequence: "EVQLVESGGGLVQPGGSLRLSCAASGFTFTDYTMDWVRQAPGKGLEWVADVNPNSGGSIYNQRFKGRFTLSVDRSKNTLYLQMNSLRAEDTAVYYCARNLGPSFYFDYWGQGTLVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSCDKTHTCPPCPAPELLGGPSVFLFPPKPKDTLMISRTPEVTCVVVDVSHEDPEVKFNWYVDGVEVHNAKTKPREEQYNSTYRVVSVLTVLHQDWLNGKEYKCKVSNKALPAPIEKTISKAKGQPREPQVYTLPPSREEMTKNQVSLTCLVKGFYPSDIAVEWESNGQPENNYKTTPPVLDSDGSFFLYSKLTVDKSRWQQGNVFSCSVMHEALHNHYTQKSLSLSPGK"
+            
+          - chain_id: "C"
+            chain_type: "protein"
+            description: "Pertuzumab Light Chain"
+            sequence: "DIQMTQSPSSSASVGDRVTITCKASQDVSIGVAWYQQKPGKAPKLLIYSASYRYTGVPSRFSGSGSGTDFTLTISSLQPEDFATYYCQQYYIYPYTFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC"
+      
+      # Control group
+      - group_id: "EXP002B_WT"
+        name: "HER2_WT_Monomer_Pertuzumab"
+        variant: "wild_type"
+        complex_type: "monomer_antibody"
+        
+        sequences:
+          - chain_id: "A"
+            chain_type: "protein"
+            description: "HER2 Wild-Type Extracellular Domain (Monomer)"
+            sequence: "TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLPTNASLSFLQDIQEVQGYVLIAHNQVRQVPLQRLRIVRGTQLFEDNYALAVLDNGDPLNNTTPVTGASPGGLRELQLRSLTEILKGGVLIQRNPQLCYQDTILWKDIFHKNNQLALTLIDTNRSRACHPCSPMCKGSRCWGESSEDCQSLTRTVCAGGCARCKGPLPTDCCHEQCAAGCTGPKHSDCLACLHFNHSGICELHCPALVTYNTDTFESMPNPEGRYTFGASCVTACPYNYLSTDVGSCTLVCPLHNQEVTAEDGTQRCEKCSKPCARVCYGLGMEHLREVRAVTSANIQEFAGCKKIFGSLAFLPESFDGDPASNTAPLQPEQLQVFETLEEITGYLYISAWPDSLPDLSVFQNLQVIRGRILHNGAYSLTLQGLGISWLGLRSLRELGSGLALIHHNTHLCFVHTVPWDQLFRNPHQALLHTANRPEDECVGEGLACHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSGVKPDLSYMPIWKFPDEEGACQPCPINCTHSCVDLDDKGCPAEQRASPLTS"
+            
+          - chain_id: "B"
+            chain_type: "protein"
+            description: "Pertuzumab Heavy Chain"
+            sequence: "EVQLVESGGGLVQPGGSLRLSCAASGFTFTDYTMDWVRQAPGKGLEWVADVNPNSGGSIYNQRFKGRFTLSVDRSKNTLYLQMNSLRAEDTAVYYCARNLGPSFYFDYWGQGTLVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSCDKTHTCPPCPAPELLGGPSVFLFPPKPKDTLMISRTPEVTCVVVDVSHEDPEVKFNWYVDGVEVHNAKTKPREEQYNSTYRVVSVLTVLHQDWLNGKEYKCKVSNKALPAPIEKTISKAKGQPREPQVYTLPPSREEMTKNQVSLTCLVKGFYPSDIAVEWESNGQPENNYKTTPPVLDSDGSFFLYSKLTVDKSRWQQGNVFSCSVMHEALHNHYTQKSLSLSPGK"
+            
+          - chain_id: "C"
+            chain_type: "protein"
+            description: "Pertuzumab Light Chain"
+            sequence: "DIQMTQSPSSSASVGDRVTITCKASQDVSIGVAWYQQKPGKAPKLLIYSASYRYTGVPSRFSGSGSGTDFTLTISSLQPEDFATYYCQQYYIYPYTFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC"
+
+
+# =============================================================================
+# EXPERIMENT 3: Lapatinib Binding to HER2 L755S
+# =============================================================================
+  - experiment_id: "EXP003"
+    name: "Lapatinib_L755S_vs_WT"
+    description: "Evaluate Lapatinib binding to HER2 L755S (kinase domain, active conformation)"
+    hypothesis: "L755S stabilizes active kinase state, reducing Lapatinib binding (low PTM)"
+    stoichiometry: "1:1"  # 1 HER2 : 1 Lapatinib
+    
+    groups:
+      # Experimental group
+      - group_id: "EXP003_MUT"
+        name: "HER2_L755S_Lapatinib"
+        variant: "L755S"
+        mutation_description: "Leucine to Serine at position 755 in kinase domain"
+        complex_type: "monomer_ligand"
+        
+        sequences:
+          - chain_id: "A"
+            chain_type: "protein"
+            description: "HER2 L755S Kinase Domain"
+            sequence: "IKRRQQKIRKYTMRRLLQETELVEPLTPSGAMPNQAQMRILKETELRKVKVLGSGAFGTVYKGIWIPDGENVKIPVAIKVSRENTSPKANKEILDEAYVMAGVGSPYVSRLLGICLTSTVQLVTQLMPYGCLLDHVRENRGRLGSQDLLNWCMQIAKGMSYLEDVRLVHRDLAARNVLVKSPNHVKITDFGLARLLDIDETEYHADGGKVPIKWMALESILRRRFTHQSDVWSYGVTVWELMTFGAKPYDGIPAREIPDLLEKGERLPQPPICTIDVYMIMVKCWMIDSECRPRFRELVSEFSRMARDPQRFVVIQNEDLGPASPLDSTFYRSLLEDDDMGDLVDAEEYLVPQQGFFCPDPAPGAGGMVHHRHRSSSTRSGGGDLTLGLEPSEEEAPRSPLAPSEGAGSDVFDGDLGMGAAKGLQSLPTHDPSPLQRYSEDPTVPLPSETDGYVAPLTCSPQPEYVNQPDVRPQPPSPREGPLPAARPAGATLERPKTLSPGKNGVVKDVFAFGGAVENPEYLTPQGGAAPQPHPPPAFSPAFDNLYYWDQDPPERGAPPSTFKGTPTAENPEYLGLDVPV"
+            mutations:
+              - position: 755
+                from: "L"
+                to: "S"
+                domain: "kinase"
+                effect: "stabilizes_active_conformation"
+                
+          - chain_id: "B"
+            chain_type: "ligand"
+            description: "Lapatinib (small molecule inhibitor)"
+            smiles: "CS(=O)(=O)CCNCC1=CC=C(O1)C2=CC3=C(C=C2)N=CN=C3NC4=CC(=C(C=C4)OCC5=CC(=CC=C5)F)Cl"
+            
+      
+      # Control group
+      - group_id: "EXP003_WT"
+        name: "HER2_WT_Lapatinib"
+        variant: "wild_type"
+        complex_type: "monomer_ligand"
+        
+        sequences:
+          - chain_id: "A"
+            chain_type: "protein"
+            description: "HER2 Wild-Type Kinase Domain"
+            sequence: "IKRRQQKIRKYTMRRLLQETELVEPLTPSGAMPNQAQMRILKETELRKVKVLGSGAFGTVYKGIWIPDGENVKIPVAIKVLRENTSPKANKEILDEAYVMAGVGSPYVSRLLGICLTSTVQLVTQLMPYGCLLDHVRENRGRLGSQDLLNWCMQIAKGMSYLEDVRLVHRDLAARNVLVKSPNHVKITDFGLARLLDIDETEYHADGGKVPIKWMALESILRRRFTHQSDVWSYGVTVWELMTFGAKPYDGIPAREIPDLLEKGERLPQPPICTIDVYMIMVKCWMIDSECRPRFRELVSEFSRMARDPQRFVVIQNEDLGPASPLDSTFYRSLLEDDDMGDLVDAEEYLVPQQGFFCPDPAPGAGGMVHHRHRSSSTRSGGGDLTLGLEPSEEEAPRSPLAPSEGAGSDVFDGDLGMGAAKGLQSLPTHDPSPLQRYSEDPTVPLPSETDGYVAPLTCSPQPEYVNQPDVRPQPPSPREGPLPAARPAGATLERPKTLSPGKNGVVKDVFAFGGAVENPEYLTPQGGAAPQPHPPPAFSPAFDNLYYWDQDPPERGAPPSTFKGTPTAENPEYLGLDVPV"
+            
+          - chain_id: "B"
+            chain_type: "ligand"
+            description: "Lapatinib"
+            smiles: "CS(=O)(=O)CCNCC1=CC=C(O1)C2=CC3=C(C=C2)N=CN=C3NC4=CC(=C(C=C4)OCC5=CC(=CC=C5)F)Cl"
+            
+
+# =============================================================================
+# EXPERIMENT 4: Lapatinib Binding to HER2 K753E
+# =============================================================================
+  - experiment_id: "EXP004"
+    name: "Lapatinib_K753E_vs_WT"
+    description: "Evaluate Lapatinib binding to HER2 K753E (kinase domain, resistant phenotype)"
+    hypothesis: "K753E alters charge/conformation, reducing Lapatinib engagement (low PTM)"
+    stoichiometry: "1:1"  # 1 HER2 : 1 Lapatinib
+    
+    groups:
+      # Experimental group
+      - group_id: "EXP004_MUT"
+        name: "HER2_K753E_Lapatinib"
+        variant: "K753E"
+        mutation_description: "Lysine to Glutamate at position 753 in kinase domain"
+        complex_type: "monomer_ligand"
+        
+        sequences:
+          - chain_id: "A"
+            chain_type: "protein"
+            description: "HER2 K753E Kinase Domain"
+            sequence: "IKRRQQKIRKYTMRRLLQETELVEPLTPSGAMPNQAQMRILKETELRKVKVLGSGAFGTVYKGIWIPDGENVKIPVAIEVLRENTSPKANKEILDEAYVMAGVGSPYVSRLLGICLTSTVQLVTQLMPYGCLLDHVRENRGRLGSQDLLNWCMQIAKGMSYLEDVRLVHRDLAARNVLVKSPNHVKITDFGLARLLDIDETEYHADGGKVPIKWMALESILRRRFTHQSDVWSYGVTVWELMTFGAKPYDGIPAREIPDLLEKGERLPQPPICTIDVYMIMVKCWMIDSECRPRFRELVSEFSRMARDPQRFVVIQNEDLGPASPLDSTFYRSLLEDDDMGDLVDAEEYLVPQQGFFCPDPAPGAGGMVHHRHRSSSTRSGGGDLTLGLEPSEEEAPRSPLAPSEGAGSDVFDGDLGMGAAKGLQSLPTHDPSPLQRYSEDPTVPLPSETDGYVAPLTCSPQPEYVNQPDVRPQPPSPREGPLPAARPAGATLERPKTLSPGKNGVVKDVFAFGGAVENPEYLTPQGGAAPQPHPPPAFSPAFDNLYYWDQDPPERGAPPSTFKGTPTAENPEYLGLDVPV"
+            mutations:
+              - position: 753
+                from: "K"
+                to: "E"
+                domain: "kinase"
+                effect: "charge_reversal_reduces_binding"
+                
+          - chain_id: "B"
+            chain_type: "ligand"
+            description: "Lapatinib"
+            smiles: "CS(=O)(=O)CCNCC1=CC=C(O1)C2=CC3=C(C=C2)N=CN=C3NC4=CC(=C(C=C4)OCC5=CC(=CC=C5)F)Cl"
+            
+      
+      # Control group - SHARED WITH EXP003
+      - group_id: "EXP004_WT"
+        name: "HER2_WT_ICD_Lapatinib"
+        variant: "wild_type"
+        shared_control: true
+        reference_experiment: "EXP003_WT"
+        note: "Uses same WT kinase domain control as L755S experiment - no need to re-run"
+        complex_type: "monomer_ligand"
+
+# =============================================================================
+# RANDOM SEEDS
+# =============================================================================
+seeds:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+
+# =============================================================================
+# OUTPUT SPECIFICATIONS
+# =============================================================================
+output_requirements:
+  structural_files:
+    - format: "cif"
+      description: "mmCIF format with coordinates"
+      include_hydrogens: false
+      
+  confidence_files:
+    - format: "npz"
+      description: "Compressed numpy array with all confidence metrics"
+      contents:
+        - pae          # NxN matrix, predicted aligned error
+        - plddt        # N-length array, per-residue confidence
+        - ptm          # Single value, overall structure quality
+        - iptm         # Single value, interface quality
+        - ipae         # Interface-specific PAE
+        - confidence_score  # Overall confidence
+        
+  json_summary:
+    filename: "confidence_summary.json"
+    include:
+      - confidence_score
+      - ptm
+      - iptm
+      - ligand_iptm  # For small molecule complexes
+      - protein_iptm # For protein-protein complexes
+      - complex_plddt
+      - complex_iplddt
+      - complex_pde
+      - complex_ipde
+      - chains_ptm
+      - pair_chains_iptm
+      
+  ranking_file:
+    filename: "ranking_debug.json"
+    description: "Model ranking information"
+    
+  plots:
+    generate_pae_plots: true
+    generate_plddt_plots: true
+    format: "png"
+    dpi: 300
+
+# =============================================================================
+# QUALITY CONTROL
+# =============================================================================
+quality_control:
+  minimum_plddt_threshold: 50  # Reject models with mean pLDDT < 50
+  flag_low_confidence_interfaces: true
+  interface_iptm_threshold: 0.3
+  
+  validation_checks:
+    - check_clashes: true
+    - check_geometry: true
+    - verify_mutations: true
+    - validate_ligand_placement: true
+
+# =============================================================================
+# EXPERIMENT SUMMARY
+# =============================================================================
+experiment_summary:
+  total_experiments: 6
+  antibody_experiments:
+    - EXP001A: "Δ16 Dimer + Trastuzumab"
+    - EXP001B: "Δ16 Monomer + Trastuzumab"
+    - EXP002A: "S310F Dimer + Pertuzumab"
+    - EXP002B: "S310F Monomer + Pertuzumab"
+  small_molecule_experiments:
+    - EXP003: "L755S + Lapatinib"
+    - EXP004: "K753E + Lapatinib"
+  
+  unique_control_groups: 3
+  controls:
+    - WT_ECD_Dimer: "Used by EXP001A and EXP002A"
+    - WT_ECD_Monomer: "Used by EXP001B and EXP002B"
+    - WT_ICD: "Used by EXP003 and EXP004"
+
+# =============================================================================
+# ADDITIONAL NOTES
+# =============================================================================
+notes:
+  - "EXPERIMENT DESIGN:"
+  - "  EXP001A/B: Δ16 vs WT - Both DIMER and MONOMER configurations"
+  - "  EXP002A/B: S310F vs WT - Both DIMER and MONOMER configurations"
+  - "  EXP003/004: Kinase domain mutations - Single chain only (no dimer)"
+  - "SHARED CONTROLS:"
+  - "  - EXP001A and EXP002A share WT_Dimer control"
+  - "  - EXP001B and EXP002B share WT_Monomer control"
+  - "  - EXP003 and EXP004 share WT_ICD control"
+  - "TOTAL MODELS:"
+  - "  EXP001A: Δ16_Dimer (25) + WT_Dimer (25) = 50 models"
+  - "  EXP001B: Δ16_Monomer (25) + WT_Monomer (25) = 50 models"
+  - "  EXP002A: S310F_Dimer (25) + [reuse WT_Dimer] = 25 models"
+  - "  EXP002B: S310F_Monomer (25) + [reuse WT_Monomer] = 25 models"
+  - "  EXP003: L755S (25) + WT_ICD (25) = 50 models"
+  - "  EXP004: K753E (25) + [reuse WT_ICD] = 25 models"
+  - "  TOTAL: 225 models"
+  - "Runtime estimate: 225 models × ~10min/model = ~37.5 hours GPU time"
+  - "Expected output: 225 models × 3 files (CIF + NPZ + JSON) = 675 files total"
+  
+contact:
+  principal_investigator: "Kuan_Lin_Huang"
+  email: "cheny69@mssm.edu"
+  date_created: "2026-02-13"
+  
+references:
+  - "HER2 sequences: UniProt P04626"
+  - "Trastuzumab: PDB 1N8Z"
+  - "Pertuzumab: PDB 1S78"
+  - "Lapatinib: PubChem CID 208908"
