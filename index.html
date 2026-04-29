@@ -169,6 +169,15 @@
       line-height: 1;
       padding: 2px 6px;
     }
+    /* Screen divs must also flex so modal-body can grow and scroll */
+    #screenLogin, #screenPanel {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
+    }
+
     .modal-body {
       padding: 22px;
       overflow-y: auto;
