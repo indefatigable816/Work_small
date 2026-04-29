@@ -1,16 +1,16 @@
 {
-  "blogTitle": "My Blog",
-  "blogDescription": "",
-  "repo": "OWNER/REPO",
-  "branch": "main",
-  "adminPasswordHash": "REPLACE_VIA_SETUP",
-  "encryptedPAT": "REPLACE_VIA_SETUP",
+  "blogTitle": "Traces of J",
+  "blogDescription": "Traces of my life, every single day.",
+  "repo": "indefatigable816/Work_small",
+  "branch": "master",
+  "adminPasswordHash": "29bfa94ca0d84b78a79c958c7f45ec6da82c12f09b9d9d55b82bb88d47875fd4",
+  "encryptedPAT": "OzMAZkaG7L4X0pvuy43+hRypfG3s8LBwjTz3agKO9tNdB6hmJuL+2CgjoF6dp/Pl+8zXdlCMU+32DmFwC7mlUN44GyGFzHMm7eoCkg9avIV7bgP8RzxtAGvsoQtE91e5m67Coy/VTVgJvnHqc/y/OvoRomdoJfO8TgLHZwbbu2be2VUt8YsIqLI=",
   "giscus": {
-    "enabled": false,
-    "repo": "OWNER/REPO",
-    "repoId": "",
+    "enabled": true,
+    "repo": "indefatigable816/Work_small",
+    "repoId": "R_kgDORl1tvQ",
     "category": "General",
-    "categoryId": "",
+    "categoryId": "DIC_kwDORl1tvc4C79s-",
     "theme": "light"
   }
 }
